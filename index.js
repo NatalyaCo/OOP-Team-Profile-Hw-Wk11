@@ -1,6 +1,10 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const Manager = require('./lib/Manager');
 
+const employees = [];
 // Use writeFileSync method to use promises instead of a callback function
 
 const promptUser = () => {
@@ -8,10 +12,32 @@ const promptUser = () => {
     {
       type: 'input',
       name: 'name',
-      message: 'Please enter name'
+      message: 'Please enter team member name',
     }, 
+    {
+        type: 'list',
+        name: 'role',
+        message: 'Select member role',
+        choices: [
+            'Manager',
+            'Engineer',
+            'Intern',
+            
+        ]
+    },
 
-const generateHTML = ({ name,}) =>
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Please enter team member id',
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'Please enter member email address',
+    },
+
+const generateHTML = ({ name, role, id, email}) =>
 `<!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,18 +1,4 @@
-const inquirer = require('inquirer');
-const fs = require('fs');
-
-// Use writeFileSync method to use promises instead of a callback function
-
-const promptUser = () => {
-  return inquirer.prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: 'Please enter name'
-    }, 
-
-const generateHTML = ({ name,}) =>
-`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -92,15 +78,9 @@ const generateHTML = ({ name,}) =>
             </section>
         </main>
     </body>
-    </html>`;
+    </html>
+    
 
-// Bonus using writeFileSync as a promise
-const init = () => {
-promptUser()
-  // Use writeFileSync method to use promises instead of a callback function
-  .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
-  .then(() => console.log('Successfully wrote to index.html'))
-  .catch((err) => console.error(err));
-};
 
-init();
+
+  

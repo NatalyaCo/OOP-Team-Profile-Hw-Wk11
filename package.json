@@ -1,0 +1,28 @@
+{
+  "name": "oop-team-profile-hw-wk11",
+  "version": "1.0.0",
+  "description": "Enter details of team members to generate HTML document with the information",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NatalyaCo/OOP-Team-Profile-Hw-Wk11.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NatalyaCo/OOP-Team-Profile-Hw-Wk11/issues"
+  },
+  "homepage": "https://github.com/NatalyaCo/OOP-Team-Profile-Hw-Wk11#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "jest": "^28.0.3"
+  }
+}

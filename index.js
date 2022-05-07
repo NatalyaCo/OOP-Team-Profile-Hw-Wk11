@@ -3,42 +3,51 @@ const fs = require('fs');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
+const {
+    choices
+} = require('yargs');
+const {
+    type
+} = require('os');
 
 const employees = [];
 // Use writeFileSync method to use promises instead of a callback function
 
 const promptUser = () => {
-  return inquirer.prompt([
-    {
-      type: 'input',
-      name: 'name',
-      message: 'Please enter team member name',
-    }, 
-    {
-        type: 'list',
-        name: 'role',
-        message: 'Select member role',
-        choices: [
-            'Manager',
-            'Engineer',
-            'Intern',
-            
-        ]
-    },
+    return inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'Please enter manager name',
+        },
 
-    {
-        type: 'input',
-        name: 'id',
-        message: 'Please enter team member id',
-    },
-    {
-        type: 'input',
-        name: 'email',
-        message: 'Please enter member email address',
-    },
+        {
+            type: 'input',
+            name: 'id',
+            message: 'Please enter manager id',
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Please enter member email address',
+        },
+        {
+            type: 'input',
+            name: 'office',
+            message: 'Enter Manager office number'
+        },
 
-const generateHTML = ({ name, role, id, email}) =>
-`<!DOCTYPE html>
+
+
+
+    ])
+}
+const generateHTML = ({
+        name,
+        role,
+        id,
+        email
+    }) =>
+    `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -58,62 +67,24 @@ const generateHTML = ({ name, role, id, email}) =>
                 <div class="col s4">
                     <div class="card cyan lighten-3">
                         <div class="card content teal lighten-5 center-align">
-                            <h2 class="padding-top card-title">Tom</h2>
-                            <h5 class='padding-bot'><span class="icon icons"><i class="fas fa-briefcase"></i></span>Manager</h5>
+                            <h2 class="padding-top card-title">${name}</h2>
+                            <h5 class='padding-bot'><span class="icon icons"><i class="fas fa-briefcase">${role}</h5>
                         </div>
                         <div class="card-content">
                             <div class="card-content">
-                                <span>ID:1234</span>
+                                <h5> ID number ${id}</h5>
                             </div>
                             <div class="card-content">
                                 <span>Email:<a class='black-text' href='mailto:tom@gmail.com'> tom@gmail.com</a></span>
                             </div>
                             <div class="card-content">
-                                <span>Office Number: 101</span>
+                                <h4> Office Number ${office} </h4>
                             </div>
                         </div>
                     </div>
                 </div>
             
-                <div class="col s4">
-                    <div class="card cyan lighten-3">
-                        <div class="card content teal lighten-5 center-align">
-                            <h2 class="padding-top card-title">Dick</h2>
-                            <h5 class='padding-bot'><span class="icon icons"><i class="fas fa-laptop-code"></i></span>Engineer</h5>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-content">
-                                <span>ID:2345</span>
-                            </div>
-                            <div class="card-content">
-                                <span>Email:<a class='black-text' href='mailto:dick@gmail.com'> dick@gmail.com</a></span>
-                            </div>
-                            <div class="card-content">
-                                <span>GitHub:<a href='https://github.com/dicky99' target='_blank'> dicky99</a></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="col s4">
-                    <div class="card cyan lighten-3">
-                        <div class="card content teal lighten-5 center-align">
-                            <h2 class="padding-top card-title">Harry</h2>
-                            <h5 class='padding-bot'><span class="icon icons"><i class="fas fa-book"></i></span>Intern</h5>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-content">
-                                <span>ID:5678</span>
-                            </div>
-                            <div class="card-content">
-                                <span>Email:<a class='black-text' href='mailto:harry@gmail.com'> harry@gmail.com</a></span>
-                            </div>
-                            <div class="card-content">
-                                <span>GitHub:<a href='https://github.com/internz22' target='_blank'> Internz22</a></span>    
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             
             </section>
         </main>
@@ -122,11 +93,116 @@ const generateHTML = ({ name, role, id, email}) =>
 
 // Bonus using writeFileSync as a promise
 const init = () => {
-promptUser()
-  // Use writeFileSync method to use promises instead of a callback function
-  .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
-  .then(() => console.log('Successfully wrote to index.html'))
-  .catch((err) => console.error(err));
+    promptUser()
+        // Use writeFileSync method to use promises instead of a callback function
+        // .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+        .then((answers) => {
+            const manager = new Manager(answers.name, answers.id, answers.email, answers.office)
+
+            employees.push(manager)
+            menu()
+
+            console.log('Successfully wrote to index.html')
+        })
+        .catch((err) => console.error(err));
 };
+
+function menu() {
+    inquirer.prompt([{
+            type: 'confirm',
+            message: 'Do you want to add another employee?',
+            name: 'confrm'
+        }])
+        .then(response => {
+            addEmployee()
+        })
+
+}
+
+function addEmployee() {
+    inquirer.prompt([{
+            type: 'list',
+            name: 'job',
+            message: 'Which of the positions would you like to add?',
+            choices: ['Engineer', 'Intern']
+        }])
+        .then(answers => {
+
+            if (answers.job === 'Engineer') {
+                addEngineer()
+            } else {
+                addIntern()
+            }
+
+        })
+
+}
+
+function addEngineer() {
+    inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'Please enter engineer name',
+        },
+
+        {
+            type: 'input',
+            name: 'id',
+            message: 'Please enter engineer id',
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Please enter member email address',
+        },
+
+        {
+            type: 'input',
+            name: 'git',
+            message: 'Enter engineer GitHub user name'
+        }
+    ])
+    .then (answers=> {
+        const engineer = new Engineer (answers.name, answers.id, answers.email, answers.git)
+
+        employees.push (engineer)
+        menu()
+    })
+}
+
+function addIntern() {
+    inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'Please enter Intern name',
+        },
+
+        {
+            type: 'input',
+            name: 'id',
+            message: 'Please enter Intern id',
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Please enter member email address',
+        },
+
+        {
+            type: 'input',
+            name: 'school',
+            message: 'Enter name of school Intern is attending'
+        }
+    ])
+
+    .then (answers=> {
+        const intern = new Intern (answers.name, answers.id, answers.email, answers.school)
+
+        employees.push (intern)
+        menu()
+    }) 
+}
+
+// .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
 
 init();

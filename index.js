@@ -11,7 +11,7 @@ const {
 } = require('os');
 
 const employees = [];
-// Use writeFileSync method to use promises instead of a callback function
+
 
 const promptUser = () => {
     return inquirer.prompt([{
@@ -35,9 +35,6 @@ const promptUser = () => {
             name: 'office',
             message: 'Enter Manager office number'
         },
-
-
-
 
     ])
 }
@@ -91,11 +88,10 @@ const generateHTML = ({
     </body>
     </html>`;
 
-// Bonus using writeFileSync as a promise
+
 const init = () => {
     promptUser()
-        // Use writeFileSync method to use promises instead of a callback function
-        // .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+        
         .then((answers) => {
             const manager = new Manager(answers.name, answers.id, answers.email, answers.office)
 
@@ -116,8 +112,9 @@ function menu() {
         .then(response => {
             addEmployee()
         })
+        .else ((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+    }
 
-}
 
 function addEmployee() {
     inquirer.prompt([{
@@ -200,9 +197,9 @@ function addIntern() {
 
         employees.push (intern)
         menu()
-    }) 
+    })
+     .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
 }
 
-// .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
 
 init();

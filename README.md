@@ -23,7 +23,7 @@ Questions:
 If you have any questions contact me on GitHub or contact Natalya at natalya.c2022@yahoo.com
 
 
-https://drive.google.com/uc?id=1fNQruStDd7lloCvmlat62q5__NSKjr8q&export=download![Screenshot (229)](https://user-images.githubusercontent.com/99770212/169143106-57302f27-efef-42b9-a6ab-bc7a917f5aaf.png)
+https://drive.google.com/uc?id=1fNQruStDd7lloCvmlat62q5__NSKjr8q&export=download![Screenshot 
 
 
 ![Screenshot (229)](https://user-images.githubusercontent.com/99770212/169143196-b535d533-5c6c-48b7-b251-2c352c0c6394.png)

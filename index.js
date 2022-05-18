@@ -38,13 +38,48 @@ const promptUser = () => {
 
     ])
 }
-const generateHTML = ({
-        name,
-        role,
-        id,
-        email
-    }) =>
-    `<!DOCTYPE html>
+const generateHTMLcards = (employees) =>{
+    let newField = ""
+   if (employees.getRole()==="Manager") {
+       newField = ` <h4> Office Number ${employees.officeNumber} </h4>`
+   }
+else if (employees.getRole()==="Engineer") {
+        newField = `  <h4>GitHub ${employees.github} </h4>`
+}
+else if (employees.getRole()==="Intern") {
+    newField = `<h4> School of Attendance ${employees.school} </h4>`
+}
+
+ return  `<section class='row'>
+ <div class="col s4">
+ <div class="card cyan lighten-3">
+     <div class="card content teal lighten-5 center-align">
+         <h2 class="padding-top card-title">${employees.name}</h2>
+         <h5>${employees.getRole()}</h5>
+     </div>
+     <div class="card-content">
+         <div class="card-content">
+             <h5> ID number ${employees.id}</h5>
+         </div>
+         <div class="card-content">
+             <span>Email:<a class='black-text' href='mailto:${employees.email}'> ${employees.email}</a></span>
+         </div>
+         <div class="card-content">
+        ${newField}
+         </div>
+     </div>
+ </div>
+</div>
+</section>
+`
+}
+ const generateHTML=(employees)=> { 
+     let cards =""
+     for (let i=0; i<employees.length; i++){
+         cards = cards + generateHTMLcards(employees[i])
+     }
+
+     return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -61,25 +96,7 @@ const generateHTML = ({
         <main>
             <section class='row'>
                 
-                <div class="col s4">
-                    <div class="card cyan lighten-3">
-                        <div class="card content teal lighten-5 center-align">
-                            <h2 class="padding-top card-title">${name}</h2>
-                            <h5 class='padding-bot'><span class="icon icons"><i class="fas fa-briefcase">${role}</h5>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-content">
-                                <h5> ID number ${id}</h5>
-                            </div>
-                            <div class="card-content">
-                                <span>Email:<a class='black-text' href='mailto:tom@gmail.com'> tom@gmail.com</a></span>
-                            </div>
-                            <div class="card-content">
-                                <h4> Office Number ${office} </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               ${cards}
             
                
             
@@ -87,11 +104,11 @@ const generateHTML = ({
         </main>
     </body>
     </html>`;
-
+}
 
 const init = () => {
     promptUser()
-        
+
         .then((answers) => {
             const manager = new Manager(answers.name, answers.id, answers.email, answers.office)
 
@@ -107,13 +124,19 @@ function menu() {
     inquirer.prompt([{
             type: 'confirm',
             message: 'Do you want to add another employee?',
-            name: 'confrm'
+            name: 'confirm'
         }])
         .then(response => {
-            addEmployee()
+            console.log(response.confirm)
+            if (response.confirm  ) {
+                addEmployee()
+            } else {
+                console.log(employees)
+                fs.writeFileSync('index.html', generateHTML(employees))
+            }
         })
-        .else ((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
-    }
+}
+
 
 
 function addEmployee() {
@@ -137,68 +160,68 @@ function addEmployee() {
 
 function addEngineer() {
     inquirer.prompt([{
-            type: 'input',
-            name: 'name',
-            message: 'Please enter engineer name',
-        },
+                type: 'input',
+                name: 'name',
+                message: 'Please enter engineer name',
+            },
 
-        {
-            type: 'input',
-            name: 'id',
-            message: 'Please enter engineer id',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Please enter member email address',
-        },
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Please enter engineer id',
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: 'Please enter member email address',
+            },
 
-        {
-            type: 'input',
-            name: 'git',
-            message: 'Enter engineer GitHub user name'
-        }
-    ])
-    .then (answers=> {
-        const engineer = new Engineer (answers.name, answers.id, answers.email, answers.git)
+            {
+                type: 'input',
+                name: 'git',
+                message: 'Enter engineer GitHub user name'
+            }
+        ])
+        .then(answers => {
+            const engineer = new Engineer(answers.name, answers.id, answers.email, answers.git)
 
-        employees.push (engineer)
-        menu()
-    })
+            employees.push(engineer)
+            menu()
+        })
 }
 
 function addIntern() {
     inquirer.prompt([{
-            type: 'input',
-            name: 'name',
-            message: 'Please enter Intern name',
-        },
+                type: 'input',
+                name: 'name',
+                message: 'Please enter Intern name',
+            },
 
-        {
-            type: 'input',
-            name: 'id',
-            message: 'Please enter Intern id',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'Please enter member email address',
-        },
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Please enter Intern id',
+            },
+            {
+                type: 'input',
+                name: 'email',
+                message: 'Please enter member email address',
+            },
 
-        {
-            type: 'input',
-            name: 'school',
-            message: 'Enter name of school Intern is attending'
-        }
-    ])
+            {
+                type: 'input',
+                name: 'school',
+                message: 'Enter name of school Intern is attending'
+            }
+        ])
 
-    .then (answers=> {
-        const intern = new Intern (answers.name, answers.id, answers.email, answers.school)
+        .then(answers => {
+            const intern = new Intern(answers.name, answers.id, answers.email, answers.school)
 
-        employees.push (intern)
-        menu()
-    })
-     .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+            employees.push(intern)
+            menu()
+        })
+       
 }
 
 
